@@ -38,6 +38,20 @@ public class MusicDataSource {
     public static final int INDEX_SONGS_ALBUM = 4;
 
 
+    public static final String QUERY_ARTIST_FORSONG_START =
+            "select " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_NAME + ", " +
+                    TABELE_ALBUMS + "." + COLUMN_ALBUM_NAME + ", " +
+                    TABELE_SONGS + "." + COLUMN_SONGS_TRACK + " from " + TABELE_SONGS +
+                    " inner join " + TABELE_ALBUMS + " on " +
+                    TABELE_SONGS + "." + COLUMN_SONGS_ALBUM + " = " + TABELE_ALBUMS + "." + COLUMN_ALBUM_ID +
+                    " inner join " + TABELE_ARTISTS + " ON " +
+                    TABELE_ALBUMS + "." + COLUMN_ALBUM_ARTIST + " = " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_ID+
+                    " where "+ TABELE_SONGS+"."+COLUMN_SONGS_TITLE+" = \=";
+    public static final String QUERY_ARTIST_FOR_SONG_SORT = " order by " +TABELE_ARTISTS+"."+COLUMN_ARTISTS_NAME+", " +
+            TABELE_ALBUMS+"."+COLUMN_ALBUM_NAME+ " collate nocase ";
+
+
+
     private Connection connection;
     // жтог тест для  git
 
@@ -104,6 +118,17 @@ public class MusicDataSource {
             System.out.println("Запрос неудачный " + sqlException.getMessage());
             sqlException.printStackTrace();
             return null;
+        }
+    }
+    public List<SongArtist> queryArtistsForSong(String songName, int sortOrder){
+        StringBuilder stringBuilder = new StringBuilder(QUERY_ARTIST_FORSONG_START);
+        stringBuilder.append(songName);
+        stringBuilder.append("\"");
+        if (sortOrder!= 0 ){
+            stringBuilder.append(QUERY_ARTIST_FOR_SONG_SORT);
+            stringBuilder.append("asc");
+
+
         }
     }
 }
