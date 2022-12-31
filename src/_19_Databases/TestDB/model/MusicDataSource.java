@@ -8,7 +8,7 @@ public class MusicDataSource {
     public static final String DB_NAME = "music.db";
 //    c:\Users\4kin\_java_porjects\Java Programming Masterclass for Software Developers\src\_19_Databases\
 //    c:\Users\solnyshko\Documents\4kin\java\Projects\Java Programming Masterclass for Software Developers\src\_19_Databases\
-    public static final String DB_PATH = "c:\\Users\\4kin\\_java_porjects\\Java Programming Masterclass for Software Developers\\src\\_19_Databases\\";
+    public static final String DB_PATH = "\\\\ULTRA-SLIM-4KIN\\4kin-c\\_java_projects\\Java Programming Masterclass for Software Developers\\src\\_19_Databases\\";
 
 
     public static final String CONNECTION_STRING = "jdbc:sqlite:" + DB_PATH + DB_NAME;
@@ -80,6 +80,15 @@ public class MusicDataSource {
             System.out.println("неудачный запрос " + sqlException.getMessage());
             return null;
         }
+    }
+
+    public List<String> queryAlbumsForArtists (String artistName, int sortOrder){
+        StringBuilder sb = new StringBuilder("SELECT * ");
+        sb.append(TABELE_ALBUMS + "." + COLUMN_ALBUM_NAME);
+        sb.append(" FROM " + TABELE_ALBUMS + " INNER JOIN " + TABELE_ARTISTS);
+        sb.append(" ON " + TABELE_ALBUMS + "." + COLUMN_ALBUM_ARTIST + " = " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_ID);
+        sb.append(" WHERE " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_NAME + " = \"" + artistName + "\"");
+
     }
 }
 
