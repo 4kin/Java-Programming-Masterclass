@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MusicDataSource {
     public static final String DB_NAME = "music.db";
-//    c:\Users\4kin\_java_porjects\Java Programming Masterclass for Software Developers\src\_19_Databases\
+    //    c:\Users\4kin\_java_porjects\Java Programming Masterclass for Software Developers\src\_19_Databases\
 //    c:\Users\solnyshko\Documents\4kin\java\Projects\Java Programming Masterclass for Software Developers\src\_19_Databases\
     public static final String DB_PATH = "\\\\ULTRA-SLIM-4KIN\\4kin-c\\_java_projects\\Java Programming Masterclass for Software Developers\\src\\_19_Databases\\";
 
@@ -82,13 +82,29 @@ public class MusicDataSource {
         }
     }
 
-    public List<String> queryAlbumsForArtists (String artistName, int sortOrder){
-        StringBuilder sb = new StringBuilder("SELECT * ");
+    public List<String> queryAlbumsForArtists(String artistName, int sortOrder) {
+        StringBuilder sb = new StringBuilder("SELECT ");
         sb.append(TABELE_ALBUMS + "." + COLUMN_ALBUM_NAME);
         sb.append(" FROM " + TABELE_ALBUMS + " INNER JOIN " + TABELE_ARTISTS);
         sb.append(" ON " + TABELE_ALBUMS + "." + COLUMN_ALBUM_ARTIST + " = " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_ID);
         sb.append(" WHERE " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_NAME + " = \"" + artistName + "\"");
 
+        System.out.println("Запрос = " + sb.toString());
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sb.toString());
+        ) {
+            List<String> albums = new ArrayList<>();
+            while (resultSet.next()) {
+                albums.add(resultSet.getString(COLUMN_ALBUM_NAME));
+            }
+            return albums;
+
+        } catch (SQLException sqlException) {
+            System.out.println("Запрос неудачный " + sqlException.getMessage());
+            sqlException.printStackTrace();
+            return null;
+        }
     }
 }
 
