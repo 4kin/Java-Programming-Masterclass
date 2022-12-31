@@ -6,22 +6,37 @@ import java.util.List;
 
 public class MusicDataSource {
     public static final String DB_NAME = "music.db";
-    public static final String DB_PATH = "c:\\Users\\solnyshko\\Documents\\4kin\\java\\Projects\\Java Programming Masterclass for Software Developers\\src\\_19_Databases\\";
+//    c:\Users\4kin\_java_porjects\Java Programming Masterclass for Software Developers\src\_19_Databases\
+//    c:\Users\solnyshko\Documents\4kin\java\Projects\Java Programming Masterclass for Software Developers\src\_19_Databases\
+    public static final String DB_PATH = "c:\\Users\\4kin\\_java_porjects\\Java Programming Masterclass for Software Developers\\src\\_19_Databases\\";
+
+
     public static final String CONNECTION_STRING = "jdbc:sqlite:" + DB_PATH + DB_NAME;
 
     public static final String TABELE_ALBUMS = "albums";
     public static final String COLUMN_ALBUM_ID = "_id";
     public static final String COLUMN_ALBUM_NAME = "name";
     public static final String COLUMN_ALBUM_ARTIST = "artist";
+    public static final int INDEX_ALBUM_ID = 1;
+    public static final int INDEX_ALBUM_NAME = 2;
+    public static final int INDEX_ALBUM_ARTIST = 3;
 
     public static final String TABELE_ARTISTS = "artists";
     public static final String COLUMN_ARTISTS_ID = "_id";
     public static final String COLUMN_ARTISTS_NAME = "name";
+    public static final int INDEX_ARTIST_ID = 1;
+    public static final int INDEX_ARTIST_NAME = 2;
 
     public static final String TABELE_SONGS = "songs";
+    public static final String COLUMN_SONGS_ID = "_id";
     public static final String COLUMN_SONGS_TRACK = "track";
     public static final String COLUMN_SONGS_TITLE = "title";
     public static final String COLUMN_SONGS_ALBUM = "album";
+    public static final int INDEX_SONGS_ID = 1;
+    public static final int INDEX_SONGS_TRACK = 2;
+    public static final int INDEX_SONGS_TITLE = 3;
+    public static final int INDEX_SONGS_ALBUM = 4;
+
 
     private Connection connection;
     // жтог тест для  git
@@ -48,11 +63,10 @@ public class MusicDataSource {
     }
 
     public List<Artist> queryArtist() {
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery("select * from " + TABELE_ARTISTS);
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery("select * from " + TABELE_ARTISTS)
+        ) {
 
             List<Artist> artists = new ArrayList<>();
             while (resultSet.next()) {
@@ -65,14 +79,6 @@ public class MusicDataSource {
         } catch (SQLException sqlException) {
             System.out.println("неудачный запрос " + sqlException.getMessage());
             return null;
-        } finally {
-            try {
-                if (statement != null) {
-                    statement.close();
-                }
-            } catch (SQLException sqlException) {
-//                Парам парам
-            }
         }
     }
 }

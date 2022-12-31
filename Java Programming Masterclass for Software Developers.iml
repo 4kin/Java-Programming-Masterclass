@@ -29,5 +29,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="sqlite-jdbc-3.40.0.0" level="project" />
+    <orderEntry type="library" name="com.btmatthews.selenium.junit4:selenium-junit4-runner:1.0.6" level="project" />
   </component>
 </module>
