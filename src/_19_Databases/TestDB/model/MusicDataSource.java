@@ -165,9 +165,10 @@ public class MusicDataSource {
 
     public int getCountPreparedStatment(String table, int artistId) {
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT count(*) as count from " + table + " where artist = ?");
-            preparedStatement.setInt(1, artistId);
-            ResultSet resultSet = preparedStatement.executeQuery();
+
+            PreparedStatement getCountPreparedStatement = connection.prepareStatement("SELECT count(*) as count from " + table + " where artist = ?");
+            getCountPreparedStatement.setInt(1, artistId);
+            ResultSet resultSet = getCountPreparedStatement.executeQuery();
             return resultSet.getInt("count");
 
         } catch (SQLException sqlException) {
@@ -175,6 +176,18 @@ public class MusicDataSource {
             sqlException.printStackTrace();
             return -1;
         }
+    }
+
+    private int insertArtist(String artistName) throws SQLException {
+
+
+        PreparedStatement insertArtistPreparedStatement = connection.prepareStatement("insert into artists (name) values (?)");
+        insertArtistPreparedStatement.setString(1, artistName);
+        ResultSet resultSet = insertArtistPreparedStatement.executeQuery();
+        if (resultSet.next()){
+            return resultSet.getInt(1);
+        } else
+
     }
 }
 
