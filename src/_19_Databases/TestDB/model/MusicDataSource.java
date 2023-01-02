@@ -178,15 +178,21 @@ public class MusicDataSource {
         }
     }
 
-    private int insertArtist(String artistName) throws SQLException {
-
-
+    public int insertArtist(String artistName) throws SQLException {
         PreparedStatement insertArtistPreparedStatement = connection.prepareStatement("insert into artists (name) values (?)");
         insertArtistPreparedStatement.setString(1, artistName);
-        ResultSet resultSet = insertArtistPreparedStatement.executeQuery();
-        if (resultSet.next()){
-            return resultSet.getInt(1);
-        } else
+        int affectedRows = insertArtistPreparedStatement.executeUpdate();
+        if (affectedRows != 1) {
+            throw new SQLException("Строка на вставилась");
+        }
+        ResultSet generatedKeys = insertArtistPreparedStatement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            return generatedKeys.getInt(1);
+
+        } else {
+            throw new SQLException("Немогу получить ID записи");
+        }
+
 
     }
 }

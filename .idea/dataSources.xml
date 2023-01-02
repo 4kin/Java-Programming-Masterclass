@@ -8,5 +8,17 @@
       <jdbc-url>jdbc:sqlite:\\ULTRA-SLIM-4KIN\4kin-c\_java_projects\Java Programming Masterclass for Software Developers\src\_19_Databases\music.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="music" uuid="f48d9cbd-254f-4b81-ab44-fa4258825645">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:K:\_java_projects\Java Programming Masterclass for Software Developers\src\_19_Databases\music.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.39.2/sqlite-jdbc-3.39.2.jar</url>
+        </library>
+      </libraries>
+    </data-source>
   </component>
 </project>
