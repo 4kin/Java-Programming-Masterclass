@@ -46,7 +46,7 @@ public class MusicDataSource {
                     TABELE_SONGS + "." + COLUMN_SONGS_ALBUM + " = " + TABELE_ALBUMS + "." + COLUMN_ALBUM_ID +
                     " inner join " + TABELE_ARTISTS + " ON " +
                     TABELE_ALBUMS + "." + COLUMN_ALBUM_ARTIST + " = " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_ID +
-                    " where " + TABELE_SONGS + "." + COLUMN_SONGS_TITLE + " = \=";
+                    " where " + TABELE_SONGS + "." + COLUMN_SONGS_TITLE + " = \"";
     public static final String QUERY_ARTIST_FOR_SONG_SORT = " order by " + TABELE_ARTISTS + "." + COLUMN_ARTISTS_NAME + ", " +
             TABELE_ALBUMS + "." + COLUMN_ALBUM_NAME + " collate nocase ";
 
@@ -137,12 +137,43 @@ public class MusicDataSource {
                 SongArtist songArtist = new SongArtist();
                 songArtist.setArtistName(resultSet.getString(1));
                 songArtist.setAlbumName(resultSet.getString(2));
-                songArtist.setTrack(resultSet.getString(2));
+                songArtist.setTrack(resultSet.getInt(3));
                 songArtists.add(songArtist);
             }
+            return songArtists;
+        } catch (SQLException sqlException) {
+            System.out.println("Что то пошло нетак " + sqlException.getMessage());
+            sqlException.printStackTrace();
+            return null;
+        }
+    }
+
+    public int getCount(String table) {
+        String sql = "SELECT count(*) as count from " + table;
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql);) {
+            int count = resultSet.getInt("count");
+            System.out.format("Счетчик = %d \n", count);
+            return count;
+        } catch (SQLException sqlException) {
+            System.out.println("чтото пошло нетак " + sqlException.getMessage());
+            sqlException.printStackTrace();
+            return -1;
+        }
+    }
+
+    public int getCountPreparedStatment(String table, int artistId) {
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement("SELECT count(*) as count from " + table + " where artist = ?");
+            preparedStatement.setInt(1, artistId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet.getInt("count");
 
         } catch (SQLException sqlException) {
+            System.out.println("Чтото пошло нетак " + sqlException.getMessage());
             sqlException.printStackTrace();
+            return -1;
         }
     }
 }
